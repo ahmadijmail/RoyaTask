@@ -1,20 +1,16 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef} from 'react';
 import {
   View,
   StyleSheet,
   TouchableOpacity,
   Text,
-  Dimensions,
   Platform,
   Image,
-  SafeAreaView,
   StatusBar,
-  AppState,
-  AppStateStatus,
 } from 'react-native';
 import Video from 'react-native-video';
 import Slider from '@react-native-community/slider';
-
+import {useNavigation} from '@react-navigation/native';
 const icons = {
   forward: require('../assets/btnForward.png'),
   pause: require('../assets/btnPause.png'),
@@ -32,7 +28,6 @@ const icons = {
   settings: require('../assets/iconSettings.png'),
   share: require('../assets/iconShare.png'),
 };
-
 interface VideoPlayerProps {
   source: string;
   title: string;
@@ -61,6 +56,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     duration: 0,
     showControls: true,
   });
+  const navigation = useNavigation();
 
   const formatTime = (seconds: number): string => {
     const minutes = Math.floor(seconds / 60);
@@ -71,10 +67,10 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   };
 
   const onProgress = (data: {currentTime: number}) => {
-    setControls(prev => ({
-      ...prev,
-      progress: data.currentTime,
-    }));
+    // setControls(prev => ({
+    //   ...prev,
+    //   progress: data.currentTime,
+    // }));
   };
 
   const onLoad = (data: {duration: number}) => {
@@ -91,6 +87,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
         translucent
         backgroundColor="transparent"
       />
+
       <Video
         ref={videoRef}
         source={{uri: source}}
@@ -117,7 +114,9 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
                 <Text style={styles.freeText}>FREE</Text>
               </View>
             )}
-            <TouchableOpacity style={styles.iconButton}>
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={styles.iconButton}>
               <Image source={icons.back} style={styles.icon} />
             </TouchableOpacity>
           </View>
