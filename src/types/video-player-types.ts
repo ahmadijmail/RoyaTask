@@ -8,6 +8,7 @@ export interface ControlsState {
   isAdPlaying: boolean; 
   currentAd: AdType | null; 
   isBuffering:boolean
+  isAdLoaded:boolean
 }
 
 export interface VideoPlayerControlsProps {
