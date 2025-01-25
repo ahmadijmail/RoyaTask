@@ -1,7 +1,14 @@
 import Slider from '@react-native-community/slider';
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {VideoPlayerControlsProps} from '../types/video-player-types';
 
 const icons = {
@@ -37,26 +44,43 @@ const VideoPlayerControls: React.FC<VideoPlayerControlsProps> = ({
       remainingSeconds,
     ).padStart(2, '0')}`;
   };
+  const handleTimeControl = (
+    action: 'forward' | 'backward' | 'seek',
+    value?: number,
+  ) => {
+    if (!videoRef.current) return;
 
-  const handleSkip = (direction: 'forward' | 'backward') => {
-    if (videoRef.current) {
-      const wasPlaying = controls.isPlaying;
-      const skipTime =
-        direction === 'forward'
-          ? Math.min(controls.progress + 10, controls.duration)
-          : Math.max(controls.progress - 10, 0);
+    const wasPlaying = controls.isPlaying;
+    let newTime = controls.progress;
 
-      setControls(prev => ({...prev, isPlaying: false}));
-      videoRef.current.seek(skipTime);
-
-      setTimeout(() => {
-        setControls(prev => ({
-          ...prev,
-          progress: skipTime,
-          isPlaying: wasPlaying,
-        }));
-      }, 100);
+    switch (action) {
+      case 'forward':
+        newTime = Math.min(controls.progress + 10, controls.duration);
+        break;
+      case 'backward':
+        newTime = Math.max(controls.progress - 10, 0);
+        break;
+      case 'seek':
+        newTime = value ?? 0;
+        break;
     }
+
+    setControls(prev => ({
+      ...prev,
+      isPlaying: false,
+      progress: newTime,
+    }));
+
+    videoRef.current.seek(newTime);
+
+    setTimeout(() => { 
+      /// this setTimeour fix that video doesnt auto resume on IOS
+      /// TODO will see other way to fix
+      setControls(prev => ({
+        ...prev,
+        isPlaying: wasPlaying,
+      }));
+    }, 100);
   };
   return (
     <View style={styles.controlsContainer}>
@@ -81,27 +105,37 @@ const VideoPlayerControls: React.FC<VideoPlayerControlsProps> = ({
       </View>
 
       <View style={styles.centerControls}>
-        <TouchableOpacity onPress={() => handleSkip('backward')}>
-          <View style={styles.circleButton}>
-            <Image source={icons.rewind} style={styles.controlIcon} />
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() =>
-            setControls(prev => ({...prev, isPlaying: !prev.isPlaying}))
-          }>
-          <View style={styles.playPauseButton}>
-            <Image
-              source={controls.isPlaying ? icons.pause : icons.play}
-              style={styles.playPauseIcon}
-            />
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleSkip('forward')}>
-          <View style={styles.circleButton}>
-            <Image source={icons.forward} style={styles.controlIcon} />
-          </View>
-        </TouchableOpacity>
+        {controls.isBuffering ? (
+          <ActivityIndicator
+            size="large"
+            color="white"
+            style={styles.loadingIndicator}
+          />
+        ) : (
+          <>
+            <TouchableOpacity onPress={() => handleTimeControl('backward')}>
+              <View style={styles.circleButton}>
+                <Image source={icons.rewind} style={styles.controlIcon} />
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() =>
+                setControls(prev => ({...prev, isPlaying: !prev.isPlaying}))
+              }>
+              <View style={styles.playPauseButton}>
+                <Image
+                  source={controls.isPlaying ? icons.pause : icons.play}
+                  style={styles.playPauseIcon}
+                />
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => handleTimeControl('forward')}>
+              <View style={styles.circleButton}>
+                <Image source={icons.forward} style={styles.controlIcon} />
+              </View>
+            </TouchableOpacity>
+          </>
+        )}
       </View>
 
       <View style={styles.bottomBar}>
@@ -118,26 +152,8 @@ const VideoPlayerControls: React.FC<VideoPlayerControlsProps> = ({
             minimumTrackTintColor="rgb(255, 255, 255)"
             maximumTrackTintColor="rgba(255, 255, 255, 0.3)"
             thumbTintColor="rgb(255, 255, 255)"
-            onValueChange={() => {
-              if (controls.isPlaying) {
-                setControls(prev => ({...prev, isPlaying: false}));
-              }
-            }}
-            onSlidingComplete={value => {
-              videoRef.current?.seek(value);
-              setControls(prev => ({...prev, isPlaying: true}));
-            }}
+            onSlidingComplete={value => handleTimeControl('seek', value)}
           />
-        </View>
-        <View style={styles.bottomControls}>
-          <View style={styles.leftControls}>
-            <TouchableOpacity style={styles.controlButton}>
-              <Image source={icons.episodes} style={styles.icon} />
-            </TouchableOpacity>
-          </View>
-          <TouchableOpacity style={styles.controlButton}>
-            <Image source={icons.settings} style={styles.icon} />
-          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -271,5 +287,10 @@ const styles = StyleSheet.create({
   },
   controlButton: {
     marginHorizontal: 8,
+  },
+
+  loadingIndicator: {
+    position: 'absolute',
+    alignSelf: 'center',
   },
 });
