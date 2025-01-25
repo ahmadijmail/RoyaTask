@@ -8,20 +8,18 @@ import {
 } from 'react-native-video';
 import {AD_TYPES, AdType, ControlsState} from '../types/video-player-types';
 
-export const useVideoPlayer = (
-  adTagUrls: Record<AdType, string>,
-) => {
+export const useVideoPlayer = (adTagUrls: Record<AdType, string>) => {
   const mainVideoRef = useRef<VideoRef>(null);
   const [controls, setControls] = useState<ControlsState>({
-    isPlaying: true,       // Whether the main video is playing
-    progress: 0,           // Current playback time of the main video
-    duration: 0,           // Total duration of the main video
-    showControls: true,    // Whether to show video controls (e.g., play/pause)
-    isAdPlaying: false,    // Whether an ad is currently playing
-    currentAd: null,       // Type of the current ad (pre-roll, mid-roll, post-roll)
-    isBuffering: false,    // Whether the main video is buffering
-    isAdLoaded: false,     // Whether the ad has loaded successfully (used to toggle visibility of the ad component)
-  });                      // so add will be only shown if it's working fine
+    isPlaying: true, // Whether the main video is playing
+    progress: 0, // Current playback time of the main video
+    duration: 0, // Total duration of the main video
+    showControls: true, // Whether to show video controls (e.g., play/pause)
+    isAdPlaying: false, // Whether an ad is currently playing
+    currentAd: null, // Type of the current ad (pre-roll, mid-roll, post-roll)
+    isBuffering: false, // Whether the main video is buffering
+    isAdLoaded: false, // Whether the ad has loaded successfully (used to toggle visibility of the ad component)
+  }); // so add will be only shown if it's working fine
 
   const [playedAds, setPlayedAds] = useState<Record<AdType, boolean>>({
     preRoll: false,
@@ -36,7 +34,7 @@ export const useVideoPlayer = (
     }));
 
     if (controls.duration <= 0) {
-      return;  
+      return;
     }
 
     const midRollTriggerTime = controls.duration * 0.5;
@@ -64,6 +62,14 @@ export const useVideoPlayer = (
   };
 
   const onVideoEnd = () => {
+    if (mainVideoRef.current) {
+      mainVideoRef.current.seek(0);
+      setControls(prev => ({
+        ...prev,
+        isPlaying:false,
+      }));
+    }
+
     if (adTagUrls.postRoll && !playedAds.postRoll) {
       playAd(AD_TYPES.POST_ROLL);
       setPlayedAds(prev => ({...prev, postRoll: true}));
@@ -91,7 +97,6 @@ export const useVideoPlayer = (
   };
 
   const handleAdEvent = (data: OnReceiveAdEventData) => {
-
     switch (data.event) {
       case 'LOADED':
         setControls(prev => ({
