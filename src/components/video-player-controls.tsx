@@ -4,6 +4,7 @@ import React from 'react';
 import {
   ActivityIndicator,
   Image,
+  Share,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -35,6 +36,7 @@ const VideoPlayerControls: React.FC<VideoPlayerControlsProps> = ({
   controls,
   setControls,
   videoRef,
+  source,
 }) => {
   const navigation = useNavigation();
 
@@ -76,14 +78,24 @@ const VideoPlayerControls: React.FC<VideoPlayerControlsProps> = ({
       }));
     }, 100);
   };
+
+  const onShare = async () => {
+    try {
+       await Share.share({
+        message: `Enjoy Watching: ${source}`,
+      });
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <View style={styles.controlsContainer}>
       <View style={styles.topBar}>
-        <TouchableOpacity style={styles.iconButton}>
+        <TouchableOpacity
+          onPress={onShare}
+          style={[styles.iconButton, {paddingRight: '9%'}]}>
           <Image source={icons.share} style={styles.icon} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.iconButton}>
-          <Image source={icons.pip} style={styles.icon} />
         </TouchableOpacity>
         <Text style={styles.titleArabic}>{title}</Text>
 
