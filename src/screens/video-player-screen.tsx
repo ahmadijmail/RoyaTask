@@ -1,4 +1,4 @@
-import { VideoPlayer } from "../components/video-player";
+import {VideoPlayer} from '../components/video-player';
 
 export default function VideoScreen() {
   const data = {
@@ -7,5 +7,7 @@ export default function VideoScreen() {
     title: 'Family Matter',
   };
 
-  return <VideoPlayer source={data.source} title={data.title} />;
+  return (
+    <VideoPlayer source={data.source} title={data.title} />
+  );
 }
