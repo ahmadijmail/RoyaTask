@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, Platform} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import Video from 'react-native-video';
 import VideoPlayerControls from './video-player-controls';
 import {AdPlayer} from './ad-player';
@@ -73,9 +73,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   hidden: {
-    opacity: 0, // Make the video invisible
-    position: 'absolute', // Remove it from the layout flow
-    width: 0, // Set width to 0 to avoid taking up space
-    height: 0, // Set height to 0 to avoid taking up space
+    opacity: 0, 
+    position: 'absolute', 
+    width: 0, 
+    height: 0,
   },
 });
