@@ -5,23 +5,20 @@ This project is a React Native video player app developed as part of a task for 
 ---
 
 ## **Features**
+
 1. **Video Player**:
    - Play, pause, and seek functionality.
-   - Supports both local and remote video sources.
    - Custom controls for a better user experience.
-
+   - Handle Share Video.
+   - 
 2. **Ad Integration**:
    - Pre-roll, mid-roll, and post-roll ads.
    - Smooth transitions between ads and main video content.
    - Ad events handling (start, complete, error).
-
+   - handle ad fallback without user noticing (render adPlayer under the hood to check for erros before showing it to the user). 
 3. **UI/UX**:
    - Clean and modern design with a dark theme.
    - Responsive design for different screen sizes.
-
-4. **Navigation**:
-   - Home screen with a welcome message and a button to navigate to the video screen.
-   - Smooth navigation between screens using React Navigation.
 
 ---
 
