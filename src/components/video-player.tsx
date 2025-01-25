@@ -53,6 +53,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({source, title}) => {
       {controls.showControls && (
         <VideoPlayerControls
           title={title}
+          source={source}
           controls={controls}
           setControls={setControls}
           videoRef={mainVideoRef}

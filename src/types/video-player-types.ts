@@ -16,6 +16,7 @@ export interface VideoPlayerControlsProps {
   controls: ControlsState;
   setControls: (value: React.SetStateAction<ControlsState>) => void;
   videoRef: React.RefObject<React.ElementRef<typeof Video>>;
+  source:string
 }
 
 export interface VideoPlayerProps {
