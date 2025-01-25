@@ -40,11 +40,13 @@ This project is a React Native video player app developed as part of a task for 
 Here are screen recordings of the app in action:
 
 ### **IOS DEMO**
-![Home Screen Demo](https://res.cloudinary.com/dtrltzmxt/video/upload/v1737837216/WhatsApp_Video_2025-01-25_at_23.32.10_yilg1r.mp4)
+
+<video src="https://res.cloudinary.com/dtrltzmxt/video/upload/v1737837209/WhatsApp_Video_2025-01-25_at_23.32.23_qbr9w6.mp4" controls width="100%"></video>
 
 ### **Android DEMO**
-![Video Screen Demo](https://res.cloudinary.com/dtrltzmxt/video/upload/v1737837209/WhatsApp_Video_2025-01-25_at_23.32.23_qbr9w6.mp4)
 
+
+<video src="https://res.cloudinary.com/dtrltzmxt/video/upload/v1737837216/WhatsApp_Video_2025-01-25_at_23.32.10_yilg1r.mp4" controls width="100%"></video>
 ---
 
 ## **Download Links**
