@@ -10,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import {VideoPlayerControlsProps} from '../types/video-player-types';
+import {formatTime} from '../lib/helper';
 
 const icons = {
   forward: require('../assets/btnForward.png'),
@@ -37,13 +38,6 @@ const VideoPlayerControls: React.FC<VideoPlayerControlsProps> = ({
 }) => {
   const navigation = useNavigation();
 
-  const formatTime = (seconds: number): string => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = Math.floor(seconds % 60);
-    return `${String(minutes).padStart(2, '0')}:${String(
-      remainingSeconds,
-    ).padStart(2, '0')}`;
-  };
   const handleTimeControl = (
     action: 'forward' | 'backward' | 'seek',
     value?: number,
@@ -73,7 +67,7 @@ const VideoPlayerControls: React.FC<VideoPlayerControlsProps> = ({
 
     videoRef.current.seek(newTime);
 
-    setTimeout(() => { 
+    setTimeout(() => {
       /// this setTimeour fix that video doesnt auto resume on IOS
       /// TODO will see other way to fix
       setControls(prev => ({
