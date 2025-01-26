@@ -49,8 +49,8 @@ Here are screen recordings of the app in action:
 ## **Download Links**
 You can download and test the app using the following links:
 
-- **APK (Android)**: [Download APK](https://your-file-hosting-service.com/app-release.apk)
-- **.app (iOS)**: [Download .app](https://your-file-hosting-service.com/app-release.app)
+- **APK (Android)**: [Download APK](https://drive.google.com/file/d/1mp3wTixl5xBGbunILC0FutUF5iRWrss2/view?usp=sharing)
+- **.app (iOS)**: [Download .app](https://drive.google.com/file/d/1BNYTqwXgQk2ZI5qaW_RpGJziQomRR-Os/view?usp=sharing)
 
 ---
 
